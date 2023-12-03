@@ -9,6 +9,7 @@ namespace MoviesProject.Service.Services
         Movie? GetById(int id);
         List<Movie>? GetByName(string name);
         List<Movie>? GetByDescription(string description);
+        List<Movie>? GetSearch(string generalPar);
     }
 
     public class MovieService : IMovieService
@@ -30,7 +31,7 @@ namespace MoviesProject.Service.Services
         {
             var result = _dbContext
                 .Movies
-                .Where(x => x.Title.Contains(name))
+                .Where(x => x.Title.ToLower().Contains(name.ToLower()))
                 .OrderByDescending(x => x.Year)
                 .ToList();
             return result;
@@ -40,9 +41,26 @@ namespace MoviesProject.Service.Services
         {
             var result = _dbContext
                 .Movies
-                .Where(x => x.Plot.Contains(description))
+                .Where(x => x.Plot.ToLower().Contains(description.ToLower()))
                 .OrderByDescending(x => x.Year)
                 .ToList();
+            return result;
+        }
+
+        public List<Movie>? GetSearch(string generalPar)
+        {
+            var result = (
+                from m in _dbContext.Movies
+                where
+                    m.Year.ToString().Contains(generalPar.ToString().ToLower())
+                    || m.Title.ToLower().Contains(generalPar.ToLower())
+                    || m.Plot.ToLower().Contains(generalPar.ToLower())
+                select m
+            )
+                .Distinct()
+                .OrderByDescending(x => x.Year)
+                .ToList();
+
             return result;
         }
 

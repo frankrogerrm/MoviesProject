@@ -13,6 +13,7 @@ builder.Services.AddScoped<IMovieService, MovieService>();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddCors();
 
 builder
     .Services
@@ -20,6 +21,10 @@ builder
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+app.UseCors(
+    x => x.AllowAnyMethod().AllowAnyHeader().SetIsOriginAllowed(origin => true).AllowCredentials()
+);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

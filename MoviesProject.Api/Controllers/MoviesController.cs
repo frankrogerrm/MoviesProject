@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using MoviesProject.Service.Services;
 
 namespace MoviesProject.Api.Controllers
@@ -30,17 +29,24 @@ namespace MoviesProject.Api.Controllers
         }
 
         [HttpGet]
-        [Route("get/search/name/{query}")]
+        [Route("search/name/{query}")]
         public IActionResult GetByName(string query)
         {
             return Ok(_movieService.GetByName(query));
         }
 
         [HttpGet]
-        [Route("get/search/description/{query}")]
+        [Route("search/description/{query}")]
         public IActionResult GetByDescription(string query)
         {
             return Ok(_movieService.GetByDescription(query));
+        }
+
+        [HttpGet]
+        [Route("search/{query}")]
+        public IActionResult GetSearch(string query)
+        {
+            return Ok(_movieService.GetSearch(query));
         }
     }
 }
